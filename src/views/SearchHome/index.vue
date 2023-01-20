@@ -3,20 +3,25 @@
         <div class="row-1">
             <img src="@/assets/logo.svg" alt="logo">
         </div>
-        <div class="row-2">
+        <form @submit.prevent="$router.push({ name: 'search', query: { s }})" class="row-2">
             <div class="wrap-input">
-                <input type="text" placeholder="Artist / Album / Title">
+                <input type="text" v-model="s" placeholder="Artist / Album / Title">
             </div>
             <div class="wrap-input">
-                <input type="button" value="Search">
+                <input type="submit" value="Search">
             </div>
-        </div>
+        </form>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'SearchPageHome'
+        name: 'SearchPageHome',
+        data () {
+            return {
+                s: ''
+            }
+        },
     }
 </script>
 

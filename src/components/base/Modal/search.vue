@@ -8,14 +8,14 @@
         </div>
         <div class="inner-modal">
             <span>Search</span>
-            <div class="form-search">
+            <form @submit.prevent="search" class="form-search">
                 <div class="wrap-input">
-                    <input type="text" placeholder="Artist / Album / Title">
+                    <input type="text" v-model="s" placeholder="Artist / Album / Title">
                 </div>
                 <div class="wrap-input">
-                    <input type="button" value="Search">
+                    <input type="submit" value="Search">
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </transition>
@@ -28,6 +28,18 @@
             open: {
                 type: Boolean,
                 default: false
+            }
+        },
+        data () {
+            return { 
+                s: ''
+            }
+        },
+        methods: {
+            search () {
+                this.$router.push({name: 'search', query : { s: this.s }})
+                this.$emit('close')
+                this.s = ''
             }
         }
     }

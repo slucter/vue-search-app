@@ -13,13 +13,13 @@
                 </div>
             </div>
         </nav>
-        <section class="text-search">
-            <p>Search result for : <span>Json Mraz</span></p>
+        <section class="text-search" v-if="search">
+            <p>Search result for : <span>{{ search }}</span></p>
         </section>
-        <section class="wrap-list-search">
-            <card />
+        <section class="wrap-list-search" v-if="results">
+            <card v-for="(item, idx) in results" :key="idx" :item="item"/>
             <div class="load-more-btn">
-                <button>Load More</button>
+                <button @click="loadMore">Load More</button>
             </div>
         </section>
     </div>
@@ -37,7 +37,45 @@
         },
         data () {
             return {
-                openModal: false
+                openModal: false,
+                search: this.$route.query?.s ?? '',
+                results: [],
+                params: {
+                    term: 'a',
+                    limit: 5,
+                    media: 'music'
+                }
+            }
+        },
+        watch: {
+            '$route.query.s' : {
+                handler : function (val) {
+                    this.search = val
+                    this.params = { ...this.params, term: val, limit: 5}
+                    this.getList ()
+                },
+                deep: true,
+                immediate: true
+            }
+        },
+        mounted () {
+            if (this.search) this.params.term = this.search
+            this.getList ()
+        },
+        methods : {
+            async getList () {
+                try {
+                    const datas = (await this.$http.get('/search', { params: this.params})).data
+                    this.results = datas.results
+
+                    console.log(datas)
+                } catch (error) {
+                    console.log(error)
+                }
+            },
+            loadMore () {
+                this.params.limit += 5
+                this.getList ()
             }
         }
     }
