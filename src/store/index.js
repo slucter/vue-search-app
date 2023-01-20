@@ -11,6 +11,15 @@ export default new Vuex.Store({
   mutations: {
   },
   actions: {
+    async getSearch (ctx, bool) {
+      return new Promise((resolve, reject) => {
+        if (bool) {
+          resolve('Oke')
+        } else {
+          reject('No')
+        }
+      })
+    }
   },
   modules: {
   }
