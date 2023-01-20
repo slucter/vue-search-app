@@ -7,15 +7,18 @@ const routes = [
   {
     path: '/',
     name: 'SearchHome',
-    component: () => import(/* webpackChunkName: "home" */ '../views/SearchHome/index.vue')
+    component: () => import(/* webpackChunkName: "home" */ '../views/SearchHome/index.vue'),
+    meta: {
+      title: 'Home - Ngmusic'
+    }
   },
   {
     path: '/search',
     name: 'search',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/SearchPage/index.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/SearchPage/index.vue'),
+    meta: {
+      title: 'Search - Ngmusic'
+    }
   }
 ]
 
@@ -23,6 +26,11 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  window.document.title = to?.meta?.title ?? 'Ngmusic'
+  next ();
 })
 
 export default router
